@@ -33,4 +33,5 @@ for (const route of routes) {
 }
 
 if (!existsSync(new URL('../out/robots.txt', import.meta.url)) || !existsSync(new URL('../out/sitemap.xml', import.meta.url))) fail('missing static metadata output');
+if (!existsSync(new URL('../out/favicon.ico', import.meta.url)) || !existsSync(new URL('../out/favicon.png', import.meta.url))) fail('missing exported favicon assets');
 if (!process.exitCode) console.log('Security configuration and static route verification passed.');

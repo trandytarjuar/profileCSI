@@ -30,7 +30,7 @@ for (const [route, status] of results) {
   if (status !== 200) fail(`${route} returned ${status}`);
 }
 
-const assets = ['/hero.jpg', '/concept.png'];
+const assets = ['/hero.jpg', '/concept.png', '/favicon.ico', '/favicon.png'];
 for (const asset of assets) {
   const assetResponse = await fetch(`${baseUrl}${asset}`, { method: 'HEAD' });
   console.log(`HEAD ${asset}: ${assetResponse.status}`);

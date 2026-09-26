@@ -24,6 +24,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/' 
   },
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.png', type: 'image/png', sizes: '256x256' }
+    ],
+    shortcut: '/favicon.ico',
+    apple: [{ url: '/favicon.png', type: 'image/png', sizes: '180x180' }]
+  },
   robots: {
     index: true,
     follow: true,
