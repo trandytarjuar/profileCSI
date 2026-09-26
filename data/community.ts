@@ -6,5 +6,19 @@ export const regions: Region[] = [
   { slug: 'cikarang', name: 'Cikarang', code: 'CKR', group: 'CIKAPUR', map: { x: 51, y: 66 } }, { slug: 'karawang', name: 'Karawang', code: 'KRW', group: 'CIKAPUR', map: { x: 55, y: 66 } }, { slug: 'purwakarta', name: 'Purwakarta', code: 'PWK', group: 'CIKAPUR', map: { x: 54, y: 69 } },
   { slug: 'semarang', name: 'Semarang', code: 'SMG', group: 'REGIONAL MANDIRI', map: { x: 61, y: 68 } }, { slug: 'malang-raya', name: 'Malang Raya', code: 'MLG', group: 'REGIONAL MANDIRI', map: { x: 67, y: 71 } }, { slug: 'deli-serdang', name: 'Deli Serdang', code: 'DLS', group: 'REGIONAL MANDIRI', map: { x: 22, y: 38 } },
 ];
-export const nationalRoles = [['Founder', 'Pendiri komunitas'], ['Ketua Umum Nasional', 'Pimpinan nasional CSI'], ['Wakil Ketua Umum Nasional', 'Wakil pimpinan nasional CSI'], ['Bendahara', 'Pengelolaan keuangan organisasi'], ['IT', 'Teknologi dan platform digital'], ['Keanggotaan', 'Pengelolaan anggota dan onboarding CSI']] as const;
+export type OrganizationRole = {
+  title: string;
+  description: string;
+  name?: string;
+  photo?: string;
+};
+
+export const nationalRoles: OrganizationRole[] = [
+  { title: 'Founder', description: 'Pendiri komunitas' },
+  { title: 'Ketua Umum Nasional', description: 'Pimpinan nasional CSI', name: 'Rangga', photo: '/rangga-ketua-umum.jpg' },
+  { title: 'Wakil Ketua Umum Nasional', description: 'Wakil pimpinan nasional CSI' },
+  { title: 'Bendahara', description: 'Pengelolaan keuangan organisasi' },
+  { title: 'IT', description: 'Teknologi dan platform digital' },
+  { title: 'Keanggotaan', description: 'Pengelolaan anggota dan onboarding CSI' },
+];
 export const activities = [['Touring', 'Perjalanan bersama dengan keselamatan sebagai prioritas.'], ['Kopdar', 'Ruang untuk bertemu, berbagi, dan mempererat persaudaraan.'], ['Safety Riding', 'Budaya berkendara yang bertanggung jawab di setiap perjalanan.'], ['Kegiatan Sosial', 'Kebersamaan yang memberi dampak positif bagi sekitar.']] as const;
