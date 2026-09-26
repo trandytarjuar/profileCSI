@@ -2,8 +2,52 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'CBR Squad Indonesia | One Passion, One Brotherhood',
-  description: 'Profil komunitas CBR Squad Indonesia: nasional, Jabodetabek, Cikapur, Semarang, dan Deli Serdang.'
+  metadataBase: new URL('https://cbrsquadindonesia.vercel.app'),
+  title: {
+    default: 'CBR Squad Indonesia | One Passion, One Brotherhood',
+    template: '%s | CBR Squad Indonesia'
+  },
+  description:
+    'CBR Squad Indonesia adalah komunitas pecinta Honda CBR di Indonesia yang menjunjung tinggi solidaritas, safety riding, dan kebersamaan antar wilayah.',
+  applicationName: 'CBR Squad Indonesia',
+  keywords: [
+    'CBR Squad Indonesia',
+    'komunitas CBR Indonesia',
+    'Honda CBR club',
+    'safety riding',
+    'club motor CBR',
+    'regional CBR Indonesia'
+  ],
+  authors: [{ name: 'CBR Squad Indonesia' }],
+  creator: 'CBR Squad Indonesia',
+  publisher: 'CBR Squad Indonesia',
+  alternates: {
+    canonical: '/' 
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1
+    }
+  },
+  openGraph: {
+    title: 'CBR Squad Indonesia',
+    description: 'One Passion, One Brotherhood. Komunitas pecinta Honda CBR di Indonesia.',
+    url: 'https://cbrsquadindonesia.vercel.app',
+    siteName: 'CBR Squad Indonesia',
+    locale: 'id_ID',
+    type: 'website'
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CBR Squad Indonesia',
+    description: 'One Passion, One Brotherhood. Komunitas pecinta Honda CBR di Indonesia.'
+  }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
