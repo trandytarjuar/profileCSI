@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function UnderConstructionPage() {
   return (
     <main style={{
@@ -17,7 +19,7 @@ export default function UnderConstructionPage() {
         <p style={{ fontSize: '1.15rem', marginTop: '1.5rem', opacity: 0.85 }}>
           Pendaftaran anggota CSI sedang dalam tahap pengembangan. Segera hadir di sini.
         </p>
-        <a
+        <Link
           href="/"
           style={{
             display: 'inline-block',
@@ -31,7 +33,7 @@ export default function UnderConstructionPage() {
           }}
         >
           KEMBALI KE HOME
-        </a>
+        </Link>
       </div>
     </main>
   );
