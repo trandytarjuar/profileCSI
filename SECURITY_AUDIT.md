@@ -22,7 +22,19 @@ CSI is a Next.js static profile website. It has no API routes, middleware, serve
 
 `default-src 'self'` is the baseline. Google Fonts is permitted only for `style-src` and `font-src`, matching `app/globals.css`. Images, scripts, and connections are restricted to the same origin. Plugins, frames, and unexpected form targets are blocked.
 
-`'unsafe-inline'` remains required in `script-src` for Next.js static-page bootstrap/React Flight inline scripts, and in `style-src` because the interactive regional map uses React inline positioning. Removing either without refactoring those mechanisms would break client-side rendering or map markers. No `unsafe-eval`, wildcards, or external script hosts are permitted.
+Production-static-output inspection found six inline script blocks. They contain Next.js bootstrap and React Flight payload calls (`self.__next_f.push(...)`), including build identifiers and serialized route metadata. They are required for App Router hydration and client navigation. Their content changes per build and page, so static hashes would need regeneration/deployment automation; a nonce requires a server response and is incompatible with this static export. `'unsafe-inline'` therefore remains required in `script-src`.
+
+The build contains eleven inline `style` attributes for interactive regional-map marker positions, so `'unsafe-inline'` also remains required in `style-src`. The output contains no inline event handlers. `script-src-attr 'none'` was added to prohibit them explicitly, while preserving React's programmatic event listeners. No `unsafe-eval`, wildcard, or external script hosts are permitted.
+
+## Production audit (2026-09-26)
+
+The production domain was tested with read-only HTTPS requests from Node.js. The root page returned HTTP 200 with active `Content-Security-Policy`, `Strict-Transport-Security: max-age=31536000`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
+
+All tested production pages returned HTTP 200: home, under-construction, and the 11 regional routes. `hero.jpg` and `concept.png` returned HTTP 200. The production CSP allows the only external resources found in source/output: Google Fonts CSS and font files.
+
+The current production root response includes `Access-Control-Allow-Origin: *`. No CORS header is configured in this repository or `vercel.json`; this is therefore platform/proxy behavior rather than application CORS configuration. The site has no API, cookies, authenticated endpoint, or state-changing request, so wildcard CORS on its public static GET response does not expose private data or create a cross-origin write risk. Reassess this immediately if APIs, previews containing private material, or authenticated features are introduced.
+
+Browser DevTools console and CSP-violation reporting could not be inspected from this non-browser environment. The route, asset, and header smoke tests are not a substitute for a final manual browser-console review after deployment.
 
 ## Verification performed
 
@@ -34,6 +46,7 @@ CSI is a Next.js static profile website. It has no API routes, middleware, serve
 - `cmd /c npx tsc --noEmit`: passed.
 - `npm run build`: passed with static export enabled; generated 54 files in `out/`, including `robots.txt`, `sitemap.xml`, and every regional route.
 - `npm run test:security`: passed. This parses `vercel.json`, verifies required CSP/header directives, and checks static HTML output for home, under-construction, and all 11 regional routes.
+- `npm run test:production`: passed against `https://cbrsquadindonesia.vercel.app`; all tested pages and both public images returned HTTP 200, and required production response headers were present.
 - `npm audit --omit=dev`: 2 vulnerability entries remain (1 moderate Next.js entry, 1 high PostCSS entry) with 4 PostCSS GHSA records: `GHSA-qx2v-qp2m-jg93` (moderate, `<8.5.10`), `GHSA-6g55-p6wh-862q` (high, `<=8.5.11`), `GHSA-fxqj-rqcc-2cmp` (moderate, `<=8.5.22`), and `GHSA-r28c-9q8g-f849` (high, `<=8.5.17`).
 - `npm outdated --json`: current Next.js 15.5.26 and compatible ESLint 9.39.5 are at their configured wanted versions. The available Next.js 16.3.6 and ESLint 10 are major upgrades and were not adopted.
 
@@ -49,6 +62,7 @@ The affected PostCSS copy runs as a build dependency; the deployed static site d
 4. Check image metadata before adding member/event photography, and secure permission before publishing it.
 5. Consider local self-hosted fonts later to remove the Google Fonts CSP exception and external request.
 6. After the next Vercel production deploy, confirm `Content-Security-Policy`, HSTS, X-Frame-Options, nosniff, Referrer-Policy, and Permissions-Policy response headers; local configuration validation is not proof of production enforcement.
+7. The `script-src-attr 'none'` CSP tightening is in `vercel.json` and requires a new Vercel deploy before it can be considered active in production. Run `npm run test:production` and inspect browser console after that deploy.
 
 ## Supply-chain automation
 

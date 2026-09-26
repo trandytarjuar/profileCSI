@@ -20,7 +20,7 @@ for (const [name, value] of Object.entries({
   if (header(name) !== value) fail(`missing or incorrect ${name}`);
 }
 
-for (const directive of ["default-src 'self'", "object-src 'none'", "base-uri 'self'", "frame-ancestors 'none'"]) {
+for (const directive of ["default-src 'self'", "object-src 'none'", "base-uri 'self'", "frame-ancestors 'none'", "script-src-attr 'none'"]) {
   if (!csp.includes(directive)) fail(`CSP is missing ${directive}`);
 }
 if (csp.includes('unsafe-eval') || csp.includes('*')) fail('CSP contains an unsafe wildcard or unsafe-eval');
