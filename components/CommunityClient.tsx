@@ -124,7 +124,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
               <br />
               <span>INDONESIA.</span>
             </h1>
-            <p className="hero-copy">TETAP SOLID, UTAMAKAN KESELAMATAN BERKENDARA.</p>
+            <p className="hero-copy">KEEP SOLID AND SAFETY RIDE</p>
             <div className="actions">
               <a className="button red" href="#territory">
                 Jelajahi Wilayah Kami <b>↘</b>
