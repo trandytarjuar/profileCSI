@@ -12,7 +12,12 @@ const groups = ["JABODETABEK", "CIKAPUR", "REGIONAL MANDIRI"] as const;
 function RegionCard({ r }: { r: Region }) {
   return (
     <Link className="region-card" href={`/regional/${r.slug}`}>
-      <span>{r.group}</span>
+      <div className="region-card-top">
+        <span>{r.group}</span>
+        {r.logo && (
+          <Image className="chapter-logo" src={r.logo} width={76} height={80} alt={`Logo CSI ${r.name}`} />
+        )}
+      </div>
       <strong>{r.code}</strong>
       <h3>{r.name}</h3>
       {r.leaderName && (
@@ -83,9 +88,14 @@ export default function CommunityClient() {
     <>
       <header className="site-header">
         <a className="wordmark" href="#home">
-          <b>
-            CSI<span>/</span>
-          </b>
+          <Image
+            className="csi-logo"
+            src="/asset-9f2a7c.png"
+            width={58}
+            height={60}
+            alt="Logo CBR Squad Indonesia"
+            priority
+          />
           <small>
             CBR SQUAD
             <br />
@@ -104,6 +114,8 @@ export default function CommunityClient() {
         <nav id="primary-nav" className={menu ? "open" : ""}>
           {[
             ["Tentang", "#about"],
+            ["Logo CSI", "#logo-history"],
+            ["Aturan Member", "#member-rules"],
             ["Organization", "#organization"],
             ["Our Territory", "#territory"],
             ["Gallery", "#gallery"],
@@ -162,13 +174,14 @@ export default function CommunityClient() {
           </div>
           <div className="prose">
             <p className="lead">
-              CBR Squad Indonesia adalah ruang persaudaraan bagi pecinta Honda
-              CBR di berbagai wilayah Indonesia.
+              Sejak 26 Desember 2022, CBR Squad Indonesia menjadi keluarga besar
+              pecinta Honda CBR di seluruh Indonesia.
             </p>
             <p>
-              Kami merayakan passion yang sama lewat perjalanan, kopdar, budaya
-              safety riding, dan kegiatan sosial. Detail sejarah, visi, dan misi
-              resmi dapat ditambahkan setelah disediakan oleh CSI.
+              Kami semua bersaudara: berdiri sejajar, duduk sama rata, berkembang
+              bersama tanpa saling menjatuhkan. Kegiatan kami mencakup riding,
+              touring, kopdar, sharing, dan kegiatan sosial dengan safety riding
+              sebagai dasar setiap perjalanan.
             </p>
             <div className="value-list">
               <span>Brotherhood</span>
@@ -177,10 +190,88 @@ export default function CommunityClient() {
             </div>
           </div>
         </section>
+        <section id="logo-history" className="section logo-history">
+          <div className="logo-history-mark">
+            <Image
+              src="/asset-9f2a7c.png"
+              width={300}
+              height={312}
+              alt="Logo CBR Squad Indonesia"
+            />
+          </div>
+          <div>
+            <p className="kicker">02 / CSI IDENTITY</p>
+            <h2>
+              SEJARAH
+              <br />
+              <span>LOGO CSI.</span>
+            </h2>
+            <p className="logo-copy">
+              Community Profile CSI mendokumentasikan perjalanan transformasi logo
+              CBR Squad Indonesia. Pengembangan identitas visual ini dicatat dengan
+              kredit kepada Wahyu Tri Setiyadi dan Fendi Mustofa.
+            </p>
+            <div className="logo-philosophy">
+              <article>
+                <b>Bentuk</b>
+                <dl>
+                  <div><dt>Tameng</dt><dd>Logo motor merupakan salah satu produk unggulan dari varian motor sport Honda yang menjadi ciri khas CBR Squad.</dd></div>
+                  <div><dt>Perisai</dt><dd>Garis perisai melambangkan kekuatan dalam mempertahankan kondisi pasang surut dalam suatu komunitas.</dd></div>
+                  <div><dt>Pita melingkar</dt><dd>Melambangkan wujud rasa persaudaraan yang tidak pernah putus.</dd></div>
+                  <div><dt>Sayap</dt><dd>Melambangkan CBR Squad yang terus berkembang untuk mencapai impian dan harapan bagi setiap individu di dalamnya.</dd></div>
+                  <div><dt>Logo Honda</dt><dd>Melambangkan bahwa CBR Squad terbentuk dari satu varian motor sport Honda.</dd></div>
+                </dl>
+              </article>
+              <article>
+                <b>Warna</b>
+                <dl>
+                  <div><dt>Hitam</dt><dd>Melambangkan kekuatan dan keseriusan dalam membangun suatu organisasi.</dd></div>
+                  <div><dt>Merah</dt><dd>Melambangkan keberanian untuk terus melangkah maju dan berkembang.</dd></div>
+                  <div><dt>Putih</dt><dd>Melambangkan toleransi dalam kegiatan sosial dan netralitas dalam keanekaragaman suku, agama, dan ras.</dd></div>
+                </dl>
+              </article>
+            </div>
+          </div>
+        </section>
+        <section id="member-rules" className="section member-rules">
+          <div className="section-head">
+            <div>
+              <p className="kicker">03 / MEMBER GUIDELINES</p>
+              <h2>
+                SOLID ON THE ROAD.
+                <br />
+                <span>SAFE IN EVERY RIDE.</span>
+              </h2>
+            </div>
+            <p>Aturan dasar dan kewajiban yang menjadi pedoman bagi member CSI.</p>
+          </div>
+          <div className="rule-grid">
+            <article>
+              <b>01</b>
+              <h3>Safety Riding</h3>
+              <p>Gunakan helm, jaket, sarung tangan, celana panjang, dan sepatu. Pastikan kendaraan layak jalan serta dokumen berkendara lengkap.</p>
+            </article>
+            <article>
+              <b>02</b>
+              <h3>Disiplin Konvoi</h3>
+              <p>Patuhi rambu lalu lintas, utamakan kendaraan prioritas, dan jangan mendahului barisan kecuali menjalankan tugas RC, sweeper, atau korlap.</p>
+            </article>
+            <article>
+              <b>03</b>
+              <h3>Etika Member</h3>
+              <p>Jaga nama baik CSI. Narkoba, SARA, politik, kekerasan, ugal-ugalan, strobo, dan merokok saat berkendara dilarang.</p>
+            </article>
+            <article>
+              <b>04</b>
+              <h3>Menjadi Member</h3>
+              <p>Ikuti proses rekrutmen, kopdar empat kali berturut-turut, aktif dalam agenda CSI, dan penuhi ketentuan untuk memperoleh NRA.</p>
+            </article>
+          </div>
+        </section>
         <section id="organization" className="section organization">
           <div className="section-head">
             <div>
-              <p className="kicker">02 / THE PEOPLE</p>
+              <p className="kicker">04 / THE PEOPLE</p>
               <h2>
                 ONE TEAM.
                 <br />
@@ -443,9 +534,13 @@ export default function CommunityClient() {
       </a>
       <footer>
         <div className="wordmark">
-          <b>
-            CSI<span>/</span>
-          </b>
+          <Image
+            className="csi-logo"
+            src="/asset-9f2a7c.png"
+            width={58}
+            height={60}
+            alt="Logo CBR Squad Indonesia"
+          />
           <small>
             CBR SQUAD
             <br />

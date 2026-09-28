@@ -25,12 +25,9 @@ export const metadata: Metadata = {
     canonical: '/' 
   },
   icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon.png', type: 'image/png', sizes: '256x256' }
-    ],
-    shortcut: '/favicon.ico',
-    apple: [{ url: '/favicon.png', type: 'image/png', sizes: '180x180' }]
+    icon: [{ url: '/csi-favicon.png', type: 'image/png', sizes: '512x512' }],
+    shortcut: '/csi-favicon.png',
+    apple: [{ url: '/csi-favicon.png', type: 'image/png', sizes: '180x180' }]
   },
   robots: {
     index: true,
