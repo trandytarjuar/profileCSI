@@ -208,9 +208,13 @@ export default function CommunityClient() {
             </h2>
             <p className="logo-copy">
               Community Profile CSI mendokumentasikan perjalanan transformasi logo
-              CBR Squad Indonesia. Pengembangan identitas visual ini dicatat dengan
-              kredit kepada Wahyu Tri Setiyadi dan Fendi Mustofa.
+              CBR Squad Indonesia dari identitas awal chapter hingga logo nasional.
             </p>
+            <ol className="logo-timeline">
+              <li><b>2020</b><span>Creator: Wahyu Tri Setiyadi</span></li>
+              <li><b>2021</b><span>Creator: Wahyu Tri Setiyadi</span></li>
+              <li><b>2022</b><span>Creator: Alm. Fendi Mustofa</span></li>
+            </ol>
             <div className="logo-philosophy">
               <article>
                 <b>Bentuk</b>
