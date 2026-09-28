@@ -18,7 +18,6 @@ function RegionCard({ r }: { r: Region }) {
           <Image className="chapter-logo" src={r.logo} width={76} height={80} alt={`Logo CSI ${r.name}`} />
         )}
       </div>
-      <strong>{r.code}</strong>
       <h3>{r.name}</h3>
       {r.leaderName && (
         <div className="regional-leader">
@@ -211,10 +210,33 @@ export default function CommunityClient() {
               CBR Squad Indonesia dari identitas awal chapter hingga logo nasional.
             </p>
             <ol className="logo-timeline">
-              <li><b>2020</b><span>Creator: Wahyu Tri Setiyadi</span></li>
-              <li><b>2021</b><span>Creator: Wahyu Tri Setiyadi</span></li>
-              <li><b>2022</b><span>Creator: Alm. Fendi Mustofa</span></li>
+              <li>
+                <Image className="timeline-logo" src="/asset-2020a7.png" width={160} height={168} alt="Logo awal CBR Squad Depok tahun 2020" />
+                <b>2020</b><span>Creator: Wahyu Tri Setiyadi</span>
+              </li>
+              <li>
+                <Image className="timeline-logo" src="/asset-2021b4.png" width={160} height={168} alt="Logo CBR Squad Depok tahun 2021" />
+                <b>2021</b><span>Creator: Wahyu Tri Setiyadi</span>
+              </li>
+              <li>
+                <Image className="timeline-logo" src="/asset-9f2a7c.png" width={160} height={168} alt="Logo CBR Squad Indonesia tahun 2022" />
+                <b>2022</b><span>Creator: Alm. Fendi Mustofa</span>
+              </li>
             </ol>
+            <div className="shape-key" aria-label="Elemen pembentuk logo CSI">
+              {[
+                ['asset-shape-a1.png', 'Tameng'],
+                ['asset-shape-b2.png', 'Perisai'],
+                ['asset-shape-c3.png', 'Pita melingkar'],
+                ['asset-shape-d4.png', 'Sayap'],
+                ['asset-shape-e5.png', 'Logo Honda'],
+              ].map(([src, label]) => (
+                <figure key={src}>
+                  <Image src={`/${src}`} width={120} height={86} alt={`Elemen ${label} pada logo CSI`} />
+                  <figcaption>{label}</figcaption>
+                </figure>
+              ))}
+            </div>
             <div className="logo-philosophy">
               <article>
                 <b>Bentuk</b>
@@ -420,6 +442,13 @@ export default function CommunityClient() {
           </div>
           <div className="map-wrap">
             <div className="indo-map" aria-hidden="true">
+              <Image
+                className="real-map"
+                src="/asset-map-id.svg"
+                alt=""
+                fill
+                sizes="(max-width: 650px) 100vw, 88vw"
+              />
               <svg viewBox="0 0 100 100" preserveAspectRatio="none">
                 <path className="island main-island" d="M11 19l9-5 10 3 5 8-3 8 4 10-5 11-8-2-3-10-8-7 2-7-3-5z" />
                 <path className="island" d="M38 62l11-2 14 1 17 4-2 4-20 2-18-2z" />
@@ -429,13 +458,10 @@ export default function CommunityClient() {
                 <path className="island island-small" d="M40 53l5 1-2 3-5-1zM72 57l4 1-2 3-4-1z" />
               </svg>
               {shown.map((r) => (
-                <span
-                  className="pin"
-                  style={{ left: `${r.map.x}%`, top: `${r.map.y}%` }}
-                  key={r.slug}
-                >
-                  {r.code}
-                </span>
+                <>
+                  <span className="map-dot" style={{ left: `${r.map.x}%`, top: `${r.map.y}%` }} title={r.name} key={`${r.slug}-dot`} />
+                  <span className="pin" style={{ left: `${r.map.labelX}%`, top: `${r.map.labelY}%` }} key={`${r.slug}-label`}>{r.code}</span>
+                </>
               ))}
             </div>
             <p className="map-caption">
@@ -528,7 +554,9 @@ export default function CommunityClient() {
       </main>
       <a
         className="whatsapp-float"
-        href="#contact"
+        href="https://wa.me/6283831658044"
+        target="_blank"
+        rel="noopener noreferrer"
         aria-label="Hubungi CSI melalui WhatsApp"
       >
         <svg viewBox="0 0 32 32" aria-hidden="true">
