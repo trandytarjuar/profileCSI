@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   activities,
   nationalRoles,
@@ -404,10 +404,19 @@ export default function CommunityClient() {
                     <h3>{r.name}</h3>
                     <button
                       className="leader"
-                      onClick={() => setProfile(`Ketua Umum ${r.name}`)}
+                      onClick={() =>
+                        setProfile(
+                          r.leaderName
+                            ? {
+                                title: `${r.leaderName} - Ketua Umum ${r.name}`,
+                                photo: r.leaderPhoto,
+                              }
+                            : `Ketua Umum ${r.name}`,
+                        )
+                      }
                     >
-                      Ketua Umum {r.name}
-                      <span>Data pengurus menyusul</span>
+                      <b>Ketua Umum {r.name}</b>
+                      <span>{r.leaderName ?? "Data pengurus menyusul"}</span>
                     </button>
                   </article>
                 ))}
@@ -458,10 +467,10 @@ export default function CommunityClient() {
                 <path className="island island-small" d="M40 53l5 1-2 3-5-1zM72 57l4 1-2 3-4-1z" />
               </svg>
               {shown.map((r) => (
-                <>
-                  <span className="map-dot" style={{ left: `${r.map.x}%`, top: `${r.map.y}%` }} title={r.name} key={`${r.slug}-dot`} />
-                  <span className="pin" style={{ left: `${r.map.labelX}%`, top: `${r.map.labelY}%` }} key={`${r.slug}-label`}>{r.code}</span>
-                </>
+                <Fragment key={r.slug}>
+                  <span className="map-dot" style={{ left: `${r.map.x}%`, top: `${r.map.y}%` }} title={r.name} />
+                  <span className="pin" style={{ left: `${r.map.labelX}%`, top: `${r.map.labelY}%` }}>{r.code}</span>
+                </Fragment>
               ))}
             </div>
             <p className="map-caption">
