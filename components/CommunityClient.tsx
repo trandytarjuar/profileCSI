@@ -2,12 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
-import {
-  activities,
-  nationalRoles,
-  regions,
-  type Region,
-} from "../data/community";
+import type { OrganizationRole, Region } from "../data/community";
 const groups = ["JABODETABEK", "CIKAPUR", "REGIONAL MANDIRI"] as const;
 function RegionCard({ r }: { r: Region }) {
   return (
@@ -76,7 +71,13 @@ function Modal({
     </div>
   );
 }
-export default function CommunityClient() {
+type CommunityClientProps = {
+  regions: Region[];
+  nationalRoles: OrganizationRole[];
+  activities: readonly (readonly [string, string])[];
+};
+
+export default function CommunityClient({ regions, nationalRoles, activities }: CommunityClientProps) {
   const [menu, setMenu] = useState(false),
     [group, setGroup] = useState("SEMUA"),
     [org, setOrg] = useState("Nasional"),
