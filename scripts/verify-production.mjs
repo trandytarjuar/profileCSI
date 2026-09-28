@@ -1,9 +1,9 @@
 const baseUrl = process.env.SITE_URL ?? 'https://cbrsquadindonesia.vercel.app';
 const routes = [
-  '/', '/under-construction', '/regional/jakarta', '/regional/bogor',
-  '/regional/depok', '/regional/tangerang', '/regional/bekasi',
-  '/regional/cikarang', '/regional/karawang', '/regional/purwakarta',
-  '/regional/semarang', '/regional/malang-raya', '/regional/deli-serdang',
+  '/', '/under-construction', '/chapter/jakarta', '/chapter/bogor',
+  '/chapter/depok', '/chapter/tangerang', '/chapter/bekasi',
+  '/chapter/cikarang', '/chapter/karawang', '/chapter/purwakarta',
+  '/chapter/semarang', '/chapter/malang-raya', '/chapter/deli-serdang',
 ];
 const requiredHeaders = {
   'content-security-policy': "default-src 'self'",

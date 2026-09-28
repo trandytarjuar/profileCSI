@@ -13,11 +13,11 @@ export default function UnderConstructionPage() {
     }}>
       <div style={{ textAlign: 'center', maxWidth: '720px' }}>
         <p style={{ letterSpacing: '0.28rem', textTransform: 'uppercase', opacity: 0.8, marginBottom: '1rem' }}>
-          CSI / Membership
+          CSI / Informasi
         </p>
-        <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', margin: 0, lineHeight: 1 }}>UNDER CONSTRUCTION</h1>
+        <h1 style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', margin: 0, lineHeight: 1 }}>SEGERA HADIR</h1>
         <p style={{ fontSize: '1.15rem', marginTop: '1.5rem', opacity: 0.85 }}>
-          Pendaftaran anggota CSI sedang dalam tahap pengembangan. Segera hadir di sini.
+          Halaman ini sedang dalam tahap pengembangan. Segera hadir.
         </p>
         <Link
           href="/"
@@ -32,7 +32,7 @@ export default function UnderConstructionPage() {
             borderRadius: '0.5rem'
           }}
         >
-          KEMBALI KE HOME
+          KEMBALI KE BERANDA
         </Link>
       </div>
     </main>

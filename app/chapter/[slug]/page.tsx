@@ -1,0 +1,14 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Image from 'next/image';
+import { notFound } from 'next/navigation';
+import { chapters } from '../../../data/community';
+import ChapterGallery from '../../../components/ChapterGallery';
+
+export function generateStaticParams() { return chapters.map(({ slug }) => ({ slug })); }
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> { const { slug } = await params; const chapter = chapters.find(r => r.slug === slug); return { title: chapter ? `Chapter ${chapter.name}` : 'Chapter' }; }
+export default async function ChapterPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const chapter = chapters.find(r => r.slug === slug); if (!chapter) notFound();
+  return <main className="chapter-page"><header className="chapter-header"><Link className="wordmark" href="/"><b>CSI<span>/</span></b><small>CBR SQUAD<br/>INDONESIA</small></Link><Link href="/#territory">← Semua chapter</Link></header><div className="crumb"><Link href="/">Beranda</Link> / <Link href="/#territory">Wilayah Kami</Link> / {chapter.name}</div><section className="chapter-hero"><p className="kicker light">{chapter.group}</p>{chapter.slug === 'deli-serdang' && chapter.logo && <Image className="chapter-hero-logo" src={chapter.logo} width={2835} height={2942} alt="Logo CSI Deli Serdang" priority sizes="(max-width: 650px) 120px, 180px" />}<span>{chapter.code}</span><h1>CSI<br/><em>{chapter.name}.</em></h1><p>Halaman profil chapter CBR Squad Indonesia.</p></section><section className="chapter-details"><article><p className="kicker">PROFIL</p>{chapter.roles ? <><h2>PENGURUS<br/><span>CHAPTER.</span></h2><dl className="chapter-officers">{chapter.roles.map(role => <div key={role.title}><dt>{role.title}</dt><dd>{role.name}</dd></div>)}</dl></> : <><h2>INFORMASI<br/><span>DARI CSI.</span></h2><p>Profil, kontak resmi, dan dokumentasi chapter belum tersedia dalam sumber data proyek.</p></>}</article>{chapter.meetup && <article className="chapter-meetup"><p className="kicker">KOPDAR</p><h2>JADWAL<br/><span>KOPDAR.</span></h2><p>{chapter.meetup.schedule}</p><p>{chapter.meetup.location}</p>{chapter.instagram && <a className="button red chapter-instagram" href={chapter.instagram.url} target="_blank" rel="noopener noreferrer">Instagram {chapter.instagram.handle}</a>}</article>}{chapter.gallery?.length ? <article className="chapter-gallery" aria-labelledby="chapter-gallery-title"><p className="kicker">GALERI CHAPTER</p><h2 id="chapter-gallery-title">CSI <span>{chapter.name.toUpperCase()}.</span></h2><ChapterGallery photos={chapter.gallery} /></article> : <article className="empty-state"><span>◈</span><h3>GALERI {chapter.name.toUpperCase()}</h3><p>Belum ada dokumentasi resmi.</p></article>}</section></main>;
+}

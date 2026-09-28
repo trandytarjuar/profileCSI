@@ -4,7 +4,7 @@ import './globals.css';
 export const metadata: Metadata = {
   metadataBase: new URL('https://cbrsquadindonesia.vercel.app'),
   title: {
-    default: 'CBR Squad Indonesia | One Passion, One Brotherhood',
+    default: 'CBR Squad Indonesia | Satu Hobi, Satu Persaudaraan',
     template: '%s | CBR Squad Indonesia'
   },
   description:
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     'Honda CBR club',
     'safety riding',
     'club motor CBR',
-    'regional CBR Indonesia'
+    'chapter CBR Indonesia'
   ],
   authors: [{ name: 'CBR Squad Indonesia' }],
   creator: 'CBR Squad Indonesia',
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'CBR Squad Indonesia',
-    description: 'One Passion, One Brotherhood. Komunitas pecinta Honda CBR di Indonesia.',
+    description: 'Satu hobi, satu persaudaraan. Komunitas pecinta Honda CBR di Indonesia.',
     url: 'https://cbrsquadindonesia.vercel.app',
     siteName: 'CBR Squad Indonesia',
     locale: 'id_ID',
@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'CBR Squad Indonesia',
-    description: 'One Passion, One Brotherhood. Komunitas pecinta Honda CBR di Indonesia.'
+    description: 'Satu hobi, satu persaudaraan. Komunitas pecinta Honda CBR di Indonesia.'
   }
 };
 

@@ -26,7 +26,7 @@ for (const directive of ["default-src 'self'", "object-src 'none'", "base-uri 's
 if (csp.includes('unsafe-eval') || csp.includes('*')) fail('CSP contains an unsafe wildcard or unsafe-eval');
 if (!csp.includes('https://fonts.googleapis.com') || !csp.includes('https://fonts.gstatic.com')) fail('CSP does not permit the configured Google Fonts resources');
 
-const routes = ['', 'under-construction', ...['jakarta', 'bogor', 'depok', 'tangerang', 'bekasi', 'cikarang', 'karawang', 'purwakarta', 'semarang', 'malang-raya', 'deli-serdang'].map((slug) => `regional/${slug}`)];
+const routes = ['', 'under-construction', ...['jakarta', 'bogor', 'depok', 'tangerang', 'bekasi', 'cikarang', 'karawang', 'purwakarta', 'semarang', 'malang-raya', 'deli-serdang'].map((slug) => `chapter/${slug}`)];
 for (const route of routes) {
   const path = route ? `out/${route}.html` : 'out/index.html';
   if (!existsSync(new URL(`../${path}`, import.meta.url))) fail(`missing static export for /${route}`);

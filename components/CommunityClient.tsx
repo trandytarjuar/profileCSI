@@ -1,28 +1,9 @@
 "use client";
-import Link from "next/link";
 import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
-import type { OrganizationRole, Region } from "../data/community";
-const groups = ["JABODETABEK", "CIKAPUR", "REGIONAL MANDIRI"] as const;
-function RegionCard({ r }: { r: Region }) {
-  return (
-    <Link className="region-card" href={`/regional/${r.slug}`}>
-      <div className="region-card-top">
-        <span>{r.group}</span>
-        {r.logo && (
-          <Image className="chapter-logo" src={r.logo} width={76} height={80} alt={`Logo CSI ${r.name}`} />
-        )}
-      </div>
-      <h3>{r.name}</h3>
-      {r.leaderName && (
-        <div className="regional-leader">
-          <small>Ketua Umum · {r.leaderName}</small>
-        </div>
-      )}
-      <i>↗</i>
-    </Link>
-  );
-}
+import { useEffect, useState } from "react";
+import type { OrganizationRole, Chapter } from "../data/community";
+import ChapterMap from "./ChapterMap";
+const groups = ["JABODETABEK", "CIKAPUR", "CHAPTER MANDIRI"] as const;
 type Profile = { title: string; photo?: string };
 function Modal({
   profile,
@@ -72,18 +53,16 @@ function Modal({
   );
 }
 type CommunityClientProps = {
-  regions: Region[];
+  chapters: Chapter[];
   nationalRoles: OrganizationRole[];
   activities: readonly (readonly [string, string])[];
 };
 
-export default function CommunityClient({ regions, nationalRoles, activities }: CommunityClientProps) {
+export default function CommunityClient({ chapters, nationalRoles, activities }: CommunityClientProps) {
   const [menu, setMenu] = useState(false),
-    [group, setGroup] = useState("SEMUA"),
     [org, setOrg] = useState("Nasional"),
     [profile, setProfile] = useState<string | Profile | null>(null),
     [gallery, setGallery] = useState("Semua");
-  const shown = regions.filter((r) => group === "SEMUA" || r.group === group);
   return (
     <>
       <header className="site-header">
@@ -116,10 +95,10 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
             ["Tentang", "#about"],
             ["Logo CSI", "#logo-history"],
             ["Aturan Member", "#member-rules"],
-            ["Organization", "#organization"],
-            ["Our Territory", "#territory"],
-            ["Gallery", "#gallery"],
-            ["Activities", "#activities"],
+            ["Organisasi", "#organization"],
+            ["Wilayah", "#territory"],
+            ["Galeri", "#gallery"],
+            ["Kegiatan", "#activities"],
           ].map(([l, h]) => (
             <a key={l} href={h} onClick={() => setMenu(false)}>
               {l}
@@ -138,38 +117,38 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
         <section id="home" className="hero">
           <div className="hero-content">
             <p className="kicker light">
-              INDONESIAN CBR COMMUNITY <em>●</em> ONE NATION
+              KOMUNITAS CBR INDONESIA <em>●</em> SATU BANGSA
             </p>
             <h1>
               CBR SQUAD
               <br />
               <span>INDONESIA.</span>
             </h1>
-            <p className="hero-copy">KEEP SOLID AND SAFETY RIDE.</p>
+            <p className="hero-copy">TETAP SOLID, UTAMAKAN KESELAMATAN BERKENDARA.</p>
             <div className="actions">
               <a className="button red" href="#territory">
-                Explore Our Territory <b>↘</b>
+                Jelajahi Wilayah Kami <b>↘</b>
               </a>
               <a className="button line" href="#about">
-                About CSI
+                Tentang CSI
               </a>
             </div>
           </div>
           <a className="scroll" href="#about">
-            SCROLL TO EXPLORE <span>↓</span>
+            JELAJAHI HALAMAN <span>↓</span>
           </a>
         </section>
         <div className="marquee">
-          ONE PASSION <b>✦</b> ONE BROTHERHOOD <b>✦</b> KEEP SOLID <b>✦</b>{" "}
-          SAFETY RIDE <b>✦</b>
+          SATU HOBI <b>✦</b> SATU PERSAUDARAAN <b>✦</b> TETAP SOLID <b>✦</b>{" "}
+          BERKENDARA AMAN <b>✦</b>
         </div>
         <section id="about" className="section split">
           <div>
-            <p className="kicker">01 / ABOUT CSI</p>
+            <p className="kicker">01 / TENTANG CSI</p>
             <h2>
-              MORE THAN
+              LEBIH DARI
               <br />
-              <span>A COMMUNITY.</span>
+              <span>SEBUAH KOMUNITAS.</span>
             </h2>
           </div>
           <div className="prose">
@@ -184,9 +163,9 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
               sebagai dasar setiap perjalanan.
             </p>
             <div className="value-list">
-              <span>Brotherhood</span>
-              <span>Safety Riding</span>
-              <span>Solidarity</span>
+              <span>Persaudaraan</span>
+              <span>Berkendara Aman</span>
+              <span>Solidaritas</span>
             </div>
           </div>
         </section>
@@ -200,28 +179,28 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
             />
           </div>
           <div>
-            <p className="kicker">02 / CSI IDENTITY</p>
+            <p className="kicker">02 / IDENTITAS CSI</p>
             <h2>
               SEJARAH
               <br />
               <span>LOGO CSI.</span>
             </h2>
             <p className="logo-copy">
-              Community Profile CSI mendokumentasikan perjalanan transformasi logo
+              Profil komunitas CSI mendokumentasikan perjalanan transformasi logo
               CBR Squad Indonesia dari identitas awal chapter hingga logo nasional.
             </p>
             <ol className="logo-timeline">
               <li>
                 <Image className="timeline-logo" src="/asset-2020a7.png" width={160} height={168} alt="Logo awal CBR Squad Depok tahun 2020" />
-                <b>2020</b><span>Creator: Wahyu Tri Setiyadi</span>
+                <b>2020</b><span>Pembuat: Wahyu Tri Setiyadi</span>
               </li>
               <li>
                 <Image className="timeline-logo" src="/asset-2021b4.png" width={160} height={168} alt="Logo CBR Squad Depok tahun 2021" />
-                <b>2021</b><span>Creator: Wahyu Tri Setiyadi</span>
+                <b>2021</b><span>Pembuat: Wahyu Tri Setiyadi</span>
               </li>
               <li>
                 <Image className="timeline-logo" src="/asset-9f2a7c.png" width={160} height={168} alt="Logo CBR Squad Indonesia tahun 2022" />
-                <b>2022</b><span>Creator: Alm. Fendi Mustofa</span>
+                <b>2022</b><span>Pembuat: Alm. Fendi Mustofa</span>
               </li>
             </ol>
             <div className="shape-key" aria-label="Elemen pembentuk logo CSI">
@@ -263,19 +242,19 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
         <section id="member-rules" className="section member-rules">
           <div className="section-head">
             <div>
-              <p className="kicker">03 / MEMBER GUIDELINES</p>
+              <p className="kicker">03 / PEDOMAN ANGGOTA</p>
               <h2>
-                SOLID ON THE ROAD.
+                SOLID DI JALAN.
                 <br />
-                <span>SAFE IN EVERY RIDE.</span>
+                <span>AMAN DI SETIAP PERJALANAN.</span>
               </h2>
             </div>
-            <p>Aturan dasar dan kewajiban yang menjadi pedoman bagi member CSI.</p>
+            <p>Aturan dasar dan kewajiban yang menjadi pedoman bagi anggota CSI.</p>
           </div>
           <div className="rule-grid">
             <article>
               <b>01</b>
-              <h3>Safety Riding</h3>
+              <h3>Berkendara Aman</h3>
               <p>Gunakan helm, jaket, sarung tangan, celana panjang, dan sepatu. Pastikan kendaraan layak jalan serta dokumen berkendara lengkap.</p>
             </article>
             <article>
@@ -285,12 +264,12 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
             </article>
             <article>
               <b>03</b>
-              <h3>Etika Member</h3>
+              <h3>Etika Anggota</h3>
               <p>Jaga nama baik CSI. Narkoba, SARA, politik, kekerasan, ugal-ugalan, strobo, dan merokok saat berkendara dilarang.</p>
             </article>
             <article>
               <b>04</b>
-              <h3>Menjadi Member</h3>
+              <h3>Menjadi Anggota</h3>
               <p>Ikuti proses rekrutmen, kopdar empat kali berturut-turut, aktif dalam agenda CSI, dan penuhi ketentuan untuk memperoleh NRA.</p>
             </article>
           </div>
@@ -298,11 +277,11 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
         <section id="organization" className="section organization">
           <div className="section-head">
             <div>
-              <p className="kicker">04 / THE PEOPLE</p>
+              <p className="kicker">04 / STRUKTUR ORGANISASI</p>
               <h2>
-                ONE TEAM.
+                SATU TIM.
                 <br />
-                <span>ONE DIRECTION.</span>
+                <span>SATU ARAH.</span>
               </h2>
             </div>
             <p>
@@ -311,7 +290,7 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
             </p>
           </div>
           <div className="org-tabs" role="tablist">
-            {["Nasional", "Koordinator Wilayah", "Regional Mandiri"].map(
+            {["Nasional", "Koordinator Wilayah", "Chapter Mandiri"].map(
               (x) => (
                 <button
                   key={x}
@@ -337,7 +316,7 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
                     )
                   }
                 >
-                  <span>0{i + 1} / NATIONAL</span>
+                  <span>0{i + 1} / NASIONAL</span>
                   {role.photo ? (
                     <Image
                       className="role-photo"
@@ -370,7 +349,7 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
                   >
                     Koordinator wilayah <span>Data pengurus menyusul</span>
                   </button>
-                  {regions
+                  {chapters
                     .filter((r) => r.group === g)
                     .map((r) => (
                       <button
@@ -395,13 +374,13 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
               ))}
             </div>
           )}
-          {org === "Regional Mandiri" && (
+          {org === "Chapter Mandiri" && (
             <div className="territory-org single">
-              {regions
-                .filter((r) => r.group === "REGIONAL MANDIRI")
+              {chapters
+                .filter((r) => r.group === "CHAPTER MANDIRI")
                 .map((r) => (
                   <article key={r.slug}>
-                    <p className="kicker">REGIONAL MANDIRI</p>
+                    <p className="kicker">CHAPTER MANDIRI</p>
                     <h3>{r.name}</h3>
                     <button
                       className="leader"
@@ -427,11 +406,11 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
         <section id="territory" className="section territory">
           <div className="section-head">
             <div>
-              <p className="kicker">03 / OUR TERRITORY</p>
+              <p className="kicker">05 / WILAYAH KAMI</p>
               <h2>
-                FROM CITY
+                DARI KOTA
                 <br />
-                <span>TO BROTHERHOOD.</span>
+                <span>MENUJU PERSAUDARAAN.</span>
               </h2>
             </div>
             <p>
@@ -439,60 +418,16 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
               tersedia.
             </p>
           </div>
-          <div className="filters">
-            {["SEMUA", ...groups].map((x) => (
-              <button
-                className={group === x ? "selected" : ""}
-                onClick={() => setGroup(x)}
-                key={x}
-              >
-                {x}
-              </button>
-            ))}
-          </div>
-          <div className="map-wrap">
-            <div className="indo-map" aria-hidden="true">
-              <Image
-                className="real-map"
-                src="/asset-map-id.svg"
-                alt=""
-                fill
-                sizes="(max-width: 650px) 100vw, 88vw"
-              />
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path className="island main-island" d="M11 19l9-5 10 3 5 8-3 8 4 10-5 11-8-2-3-10-8-7 2-7-3-5z" />
-                <path className="island" d="M38 62l11-2 14 1 17 4-2 4-20 2-18-2z" />
-                <path className="island" d="M50 26l11-5 10 6 4 13-6 13-13-1-7-10z" />
-                <path className="island" d="M76 35l6-5 7 3-2 7 7 4-5 5-6-2-3 8-6-4 2-7-4-3z" />
-                <path className="island" d="M83 61l9-2 4 4-6 3-8-1zM82 75l10-4 5 5-11 6-6-2zM62 76l10 1 3 4-14 1-3-3z" />
-                <path className="island island-small" d="M40 53l5 1-2 3-5-1zM72 57l4 1-2 3-4-1z" />
-              </svg>
-              {shown.map((r) => (
-                <Fragment key={r.slug}>
-                  <span className="map-dot" style={{ left: `${r.map.x}%`, top: `${r.map.y}%` }} title={r.name} />
-                  <span className="pin" style={{ left: `${r.map.labelX}%`, top: `${r.map.labelY}%` }}>{r.code}</span>
-                </Fragment>
-              ))}
-            </div>
-            <p className="map-caption">
-              Sebaran regional CSI di Indonesia. Pilih kartu regional di bawah
-              untuk membuka halaman wilayah.
-            </p>
-          </div>
-          <div className="region-grid">
-            {shown.map((r) => (
-              <RegionCard key={r.slug} r={r} />
-            ))}
-          </div>
+          <ChapterMap chapters={chapters} />
         </section>
         <section id="gallery" className="section gallery">
           <div className="section-head">
             <div>
-              <p className="kicker">04 / DOCUMENTATION</p>
+              <p className="kicker">06 / DOKUMENTASI</p>
               <h2>
-                THE ROAD,
+                PERJALANAN,
                 <br />
-                <span>IN FRAMES.</span>
+                <span>DALAM KENANGAN.</span>
               </h2>
             </div>
             <p>
@@ -505,9 +440,9 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
               "Semua",
               "Touring",
               "Kopdar",
-              "Safety Riding",
-              "Social Activity",
-              "Brotherhood",
+              "Berkendara Aman",
+              "Kegiatan Sosial",
+              "Persaudaraan",
             ].map((x) => (
               <button
                 className={gallery === x ? "selected" : ""}
@@ -529,11 +464,11 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
           </div>
         </section>
         <section id="activities" className="section activities">
-          <p className="kicker">05 / WHAT WE DO</p>
+          <p className="kicker">07 / KEGIATAN KAMI</p>
           <h2>
-            BUILT FOR
+            DIBUAT UNTUK
             <br />
-            <span>THE ROAD.</span>
+            <span>PERJALANAN.</span>
           </h2>
           <div className="activity-list">
             {activities.map(([name, copy], i) => (
@@ -547,18 +482,18 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
           </div>
         </section>
         <section id="contact" className="contact">
-          <p className="kicker light">06 / KEEP IN TOUCH</p>
+          <p className="kicker light">08 / TETAP TERHUBUNG</p>
           <h2>
-            ONE PASSION.
+            SATU HOBI.
             <br />
-            ONE <span>BROTHERHOOD.</span>
+            SATU <span>PERSAUDARAAN.</span>
           </h2>
           <p>
             Kontak dan kanal sosial resmi CSI akan ditampilkan setelah data
             publik diberikan.
           </p>
           <a className="button dark" href="#territory">
-            Lihat Regional ↗
+            Lihat Chapter ↗
           </a>
         </section>
       </main>
@@ -589,7 +524,7 @@ export default function CommunityClient({ regions, nationalRoles, activities }: 
             INDONESIA
           </small>
         </div>
-        <p>KEEP SOLID AND SAFETY RIDE</p>
+        <p>TETAP SOLID, BERKENDARA AMAN</p>
         <a
           className="instagram-link"
           href="https://www.instagram.com/cbrsquadindonesia_official?stkn=MWV2OXl0M2Y3ODl0YQ=="

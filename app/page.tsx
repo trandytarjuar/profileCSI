@@ -1,6 +1,6 @@
 import CommunityClient from '../components/CommunityClient';
-import { activities, nationalRoles, regions } from '../data/community';
+import { activities, nationalRoles, chapters } from '../data/community';
 
 export default function Home() {
-  return <CommunityClient regions={regions} nationalRoles={nationalRoles} activities={activities} />;
+  return <CommunityClient chapters={chapters} nationalRoles={nationalRoles} activities={activities} />;
 }

@@ -1,5 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/regional/:slug", "destination": "/chapter/:slug", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",
