@@ -4,7 +4,43 @@ import { useEffect, useState } from "react";
 import type { OrganizationRole, Chapter } from "../data/community";
 import ChapterMap from "./ChapterMap";
 const groups = ["JABODETABEK", "CIKAPUR", "CHAPTER MANDIRI"] as const;
+type Language = "id" | "en";
+
+const copy = {
+  id: {
+    language: "EN", nav: ["Tentang", "Logo CSI", "Aturan Member", "Organisasi", "Wilayah", "Galeri", "Kegiatan"], join: "Gabung CSI ↗",
+    explore: "Jelajahi Wilayah Kami", about: "Tentang CSI", scroll: "JELAJAHI HALAMAN",
+    marquee: "SATU HOBI ✦ SATU PERSAUDARAAN ✦ TETAP SOLID ✦ BERKENDARA AMAN ✦",
+    aboutKicker: "01 / TENTANG CSI", aboutTitle: <>LEBIH DARI<br /><span>SEBUAH KOMUNITAS.</span></>,
+    lead: "Sejak 26 Desember 2022, CBR Squad Indonesia menjadi keluarga besar pecinta Honda CBR di seluruh Indonesia.",
+    aboutCopy: "Kami semua bersaudara: berdiri sejajar, duduk sama rata, berkembang bersama tanpa saling menjatuhkan. Kegiatan kami mencakup riding, touring, kopdar, sharing, dan kegiatan sosial dengan safety riding sebagai dasar setiap perjalanan.",
+    values: ["Persaudaraan", "Berkendara Aman", "Solidaritas"], territoryKicker: "05 / WILAYAH KAMI",
+    territoryTitle: <>DARI KOTA<br /><span>MENUJU PERSAUDARAAN.</span></>, territoryCopy: "Pilih wilayah untuk melihat halaman profil dan informasi yang tersedia.",
+    galleryKicker: "06 / DOKUMENTASI", galleryTitle: <>PERJALANAN,<br /><span>DALAM KENANGAN.</span></>, galleryCopy: "Dokumentasi resmi per kegiatan dapat ditambahkan tanpa mengubah tata letak ini.",
+    filters: ["Semua", "Touring", "Kopdar", "Berkendara Aman", "Kegiatan Sosial", "Persaudaraan"], empty: "Belum ada foto dokumentasi resmi yang tersedia untuk ditampilkan.",
+    activitiesKicker: "07 / KEGIATAN KAMI", activitiesTitle: <>DIBUAT UNTUK<br /><span>PERJALANAN.</span></>, contactKicker: "08 / TETAP TERHUBUNG",
+    contactTitle: <>SATU HOBI.<br />SATU <span>PERSAUDARAAN.</span></>, contactCopy: "Kontak dan kanal sosial resmi CSI akan ditampilkan setelah data publik diberikan.",
+    chapters: "Lihat Chapter ↗", footer: "TETAP SOLID, BERKENDARA AMAN", top: "Kembali ke atas ↑", all: "DOKUMENTASI CSI",
+  },
+  en: {
+    language: "ID", nav: ["About", "CSI Logo", "Member Rules", "Organization", "Territories", "Gallery", "Activities"], join: "Join CSI ↗",
+    explore: "Explore Our Territories", about: "About CSI", scroll: "EXPLORE THE PAGE",
+    marquee: "ONE PASSION ✦ ONE BROTHERHOOD ✦ STAY SOLID ✦ RIDE SAFELY ✦",
+    aboutKicker: "01 / ABOUT CSI", aboutTitle: <>MORE THAN<br /><span>A COMMUNITY.</span></>,
+    lead: "Since 26 December 2022, CBR Squad Indonesia has been a large family for Honda CBR enthusiasts across Indonesia.",
+    aboutCopy: "We are all brothers and sisters: equal, growing together, and never bringing one another down. Our activities include riding, touring, meetups, sharing, and social initiatives, with safe riding as the foundation of every journey.",
+    values: ["Brotherhood", "Safe Riding", "Solidarity"], territoryKicker: "05 / OUR TERRITORIES",
+    territoryTitle: <>FROM CITIES<br /><span>TO BROTHERHOOD.</span></>, territoryCopy: "Choose a territory to view its profile and the available information.",
+    galleryKicker: "06 / DOCUMENTATION", galleryTitle: <>JOURNEYS,<br /><span>REMEMBERED.</span></>, galleryCopy: "Official activity documentation can be added without changing this layout.",
+    filters: ["All", "Touring", "Meetups", "Safe Riding", "Social Activities", "Brotherhood"], empty: "No official photos are available to display yet.",
+    activitiesKicker: "07 / OUR ACTIVITIES", activitiesTitle: <>MADE FOR<br /><span>THE JOURNEY.</span></>, contactKicker: "08 / STAY CONNECTED",
+    contactTitle: <>ONE PASSION.<br />ONE <span>BROTHERHOOD.</span></>, contactCopy: "Official CSI contact details and social channels will appear once public information is provided.",
+    chapters: "View Chapters ↗", footer: "STAY SOLID, RIDE SAFELY", top: "Back to top ↑", all: "CSI DOCUMENTATION",
+  },
+} as const;
 type Profile = { title: string; photo?: string };
+// Temporarily retained for future profile content; modal rendering is disabled below.
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Modal({
   profile,
   close,
@@ -61,8 +97,10 @@ type CommunityClientProps = {
 export default function CommunityClient({ chapters, nationalRoles, activities }: CommunityClientProps) {
   const [menu, setMenu] = useState(false),
     [org, setOrg] = useState("Nasional"),
-    [profile, setProfile] = useState<string | Profile | null>(null),
-    [gallery, setGallery] = useState("Semua");
+    [, setProfile] = useState<string | Profile | null>(null),
+    [gallery, setGallery] = useState(0),
+    [language, setLanguage] = useState<Language>("id");
+  const t = copy[language];
   return (
     <>
       <header className="site-header">
@@ -81,6 +119,9 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
             INDONESIA
           </small>
         </a>
+        <button className="language-button" style={{ border: "1px solid #555", background: "transparent", color: "white", padding: ".45rem .6rem", fontSize: ".62rem", fontWeight: 800, letterSpacing: ".12em" }} onClick={() => setLanguage(language === "id" ? "en" : "id")} aria-label={language === "id" ? "Switch to English" : "Ganti ke Bahasa Indonesia"}>
+          {t.language}
+        </button>
         <button
           className="menu-button"
           aria-expanded={menu}
@@ -91,16 +132,8 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
           <span className="sr-only">Menu</span>
         </button>
         <nav id="primary-nav" className={menu ? "open" : ""}>
-          {[
-            ["Tentang", "#about"],
-            ["Logo CSI", "#logo-history"],
-            ["Aturan Member", "#member-rules"],
-            ["Organisasi", "#organization"],
-            ["Wilayah", "#territory"],
-            ["Galeri", "#gallery"],
-            ["Kegiatan", "#activities"],
-          ].map(([l, h]) => (
-            <a key={l} href={h} onClick={() => setMenu(false)}>
+          {t.nav.map((l, i) => (
+            <a key={l} href={["#about", "#logo-history", "#member-rules", "#organization", "#territory", "#gallery", "#activities"][i]} onClick={() => setMenu(false)}>
               {l}
             </a>
           ))}
@@ -127,45 +160,34 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
             <p className="hero-copy">KEEP SOLID AND SAFETY RIDE</p>
             <div className="actions">
               <a className="button red" href="#territory">
-                Jelajahi Wilayah Kami <b>↘</b>
+                {t.explore} <b>↘</b>
               </a>
               <a className="button line" href="#about">
-                Tentang CSI
+                {t.about}
               </a>
             </div>
           </div>
           <a className="scroll" href="#about">
-            JELAJAHI HALAMAN <span>↓</span>
+            {t.scroll} <span>↓</span>
           </a>
         </section>
         <div className="marquee">
-          SATU HOBI <b>✦</b> SATU PERSAUDARAAN <b>✦</b> TETAP SOLID <b>✦</b>{" "}
-          BERKENDARA AMAN <b>✦</b>
+          {t.marquee}
         </div>
         <section id="about" className="section split">
           <div>
-            <p className="kicker">01 / TENTANG CSI</p>
-            <h2>
-              LEBIH DARI
-              <br />
-              <span>SEBUAH KOMUNITAS.</span>
-            </h2>
+            <p className="kicker">{t.aboutKicker}</p>
+            <h2>{t.aboutTitle}</h2>
           </div>
           <div className="prose">
             <p className="lead">
-              Sejak 26 Desember 2022, CBR Squad Indonesia menjadi keluarga besar
-              pecinta Honda CBR di seluruh Indonesia.
+              {t.lead}
             </p>
             <p>
-              Kami semua bersaudara: berdiri sejajar, duduk sama rata, berkembang
-              bersama tanpa saling menjatuhkan. Kegiatan kami mencakup riding,
-              touring, kopdar, sharing, dan kegiatan sosial dengan safety riding
-              sebagai dasar setiap perjalanan.
+              {t.aboutCopy}
             </p>
             <div className="value-list">
-              <span>Persaudaraan</span>
-              <span>Berkendara Aman</span>
-              <span>Solidaritas</span>
+              {t.values.map((value) => <span key={value}>{value}</span>)}
             </div>
           </div>
         </section>
@@ -242,34 +264,34 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         <section id="member-rules" className="section member-rules">
           <div className="section-head">
             <div>
-              <p className="kicker">03 / PEDOMAN ANGGOTA</p>
+              <p className="kicker">{language === "en" ? "03 / MEMBER GUIDE" : "03 / PEDOMAN ANGGOTA"}</p>
               <h2>
-                SOLID DI JALAN.
+                {language === "en" ? "SOLID ON THE ROAD." : "SOLID DI JALAN."}
                 <br />
-                <span>AMAN DI SETIAP PERJALANAN.</span>
+                <span>{language === "en" ? "SAFE ON EVERY JOURNEY." : "AMAN DI SETIAP PERJALANAN."}</span>
               </h2>
             </div>
-            <p>Aturan dasar dan kewajiban yang menjadi pedoman bagi anggota CSI.</p>
+            <p>{language === "en" ? "Core rules and responsibilities that guide CSI members." : "Aturan dasar dan kewajiban yang menjadi pedoman bagi anggota CSI."}</p>
           </div>
           <div className="rule-grid">
             <article>
               <b>01</b>
-              <h3>Berkendara Aman</h3>
-              <p>Gunakan helm, jaket, sarung tangan, celana panjang, dan sepatu. Pastikan kendaraan layak jalan serta dokumen berkendara lengkap.</p>
+              <h3>{language === "en" ? "Safe Riding" : "Berkendara Aman"}</h3>
+              <p>{language === "en" ? "Wear a helmet, jacket, gloves, long trousers, and shoes. Ensure your vehicle is roadworthy and your documents are complete." : "Gunakan helm, jaket, sarung tangan, celana panjang, dan sepatu. Pastikan kendaraan layak jalan serta dokumen berkendara lengkap."}</p>
             </article>
             <article>
               <b>02</b>
-              <h3>Disiplin Konvoi</h3>
+              <h3>{language === "en" ? "Convoy Discipline" : "Disiplin Konvoi"}</h3>
               <p>Patuhi rambu lalu lintas, utamakan kendaraan prioritas, dan jangan mendahului barisan kecuali menjalankan tugas RC, sweeper, atau korlap.</p>
             </article>
             <article>
               <b>03</b>
-              <h3>Etika Anggota</h3>
+              <h3>{language === "en" ? "Member Ethics" : "Etika Anggota"}</h3>
               <p>Jaga nama baik CSI. Narkoba, SARA, politik, kekerasan, ugal-ugalan, strobo, dan merokok saat berkendara dilarang.</p>
             </article>
             <article>
               <b>04</b>
-              <h3>Menjadi Anggota</h3>
+              <h3>{language === "en" ? "Becoming a Member" : "Menjadi Anggota"}</h3>
               <p>Ikuti proses rekrutmen, kopdar empat kali berturut-turut, aktif dalam agenda CSI, dan penuhi ketentuan untuk memperoleh NRA.</p>
             </article>
           </div>
@@ -406,47 +428,30 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         <section id="territory" className="section territory">
           <div className="section-head">
             <div>
-              <p className="kicker">05 / WILAYAH KAMI</p>
-              <h2>
-                DARI KOTA
-                <br />
-                <span>MENUJU PERSAUDARAAN.</span>
-              </h2>
+              <p className="kicker">{t.territoryKicker}</p>
+              <h2>{t.territoryTitle}</h2>
             </div>
             <p>
-              Pilih wilayah untuk melihat halaman profil dan informasi yang
-              tersedia.
+              {t.territoryCopy}
             </p>
           </div>
-          <ChapterMap chapters={chapters} />
+          <ChapterMap chapters={chapters} language={language} />
         </section>
         <section id="gallery" className="section gallery">
           <div className="section-head">
             <div>
-              <p className="kicker">06 / DOKUMENTASI</p>
-              <h2>
-                PERJALANAN,
-                <br />
-                <span>DALAM KENANGAN.</span>
-              </h2>
+              <p className="kicker">{t.galleryKicker}</p>
+              <h2>{t.galleryTitle}</h2>
             </div>
             <p>
-              Dokumentasi resmi per kegiatan dapat ditambahkan tanpa mengubah
-              tata letak ini.
+              {t.galleryCopy}
             </p>
           </div>
           <div className="filters">
-            {[
-              "Semua",
-              "Touring",
-              "Kopdar",
-              "Berkendara Aman",
-              "Kegiatan Sosial",
-              "Persaudaraan",
-            ].map((x) => (
+            {t.filters.map((x, i) => (
               <button
-                className={gallery === x ? "selected" : ""}
-                onClick={() => setGallery(x)}
+                className={gallery === i ? "selected" : ""}
+                onClick={() => setGallery(i)}
                 key={x}
               >
                 {x}
@@ -456,20 +461,16 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
           <div className="empty-state">
             <span>◈</span>
             <h3>
-              {gallery === "Semua" ? "DOKUMENTASI CSI" : gallery.toUpperCase()}
+              {gallery === 0 ? t.all : t.filters[gallery].toUpperCase()}
             </h3>
             <p>
-              Belum ada foto dokumentasi resmi yang tersedia untuk ditampilkan.
+              {t.empty}
             </p>
           </div>
         </section>
         <section id="activities" className="section activities">
-          <p className="kicker">07 / KEGIATAN KAMI</p>
-          <h2>
-            DIBUAT UNTUK
-            <br />
-            <span>PERJALANAN.</span>
-          </h2>
+          <p className="kicker">{t.activitiesKicker}</p>
+          <h2>{t.activitiesTitle}</h2>
           <div className="activity-list">
             {activities.map(([name, copy], i) => (
               <article key={name}>
@@ -482,24 +483,19 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
           </div>
         </section>
         <section id="contact" className="contact">
-          <p className="kicker light">08 / TETAP TERHUBUNG</p>
-          <h2>
-            SATU HOBI.
-            <br />
-            SATU <span>PERSAUDARAAN.</span>
-          </h2>
+          <p className="kicker light">{t.contactKicker}</p>
+          <h2>{t.contactTitle}</h2>
           <p>
-            Kontak dan kanal sosial resmi CSI akan ditampilkan setelah data
-            publik diberikan.
+            {t.contactCopy}
           </p>
           <a className="button dark" href="#territory">
-            Lihat Chapter ↗
+            {t.chapters}
           </a>
         </section>
       </main>
       <a
         className="whatsapp-float"
-        href="https://wa.me/6283831658044"
+        href="https://wa.me/6283831658044?text=Halo%20Admin%20CSI%2C%20saya%20ingin%20mendapatkan%20informasi%20tentang%20CBR%20Squad%20Indonesia.%0A%0ANama%3A%0ADomisili%3A%0AMotor%20CBR%3A%0AKeperluan%3A"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Hubungi CSI melalui WhatsApp"
@@ -524,7 +520,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
             INDONESIA
           </small>
         </div>
-        <p>TETAP SOLID, BERKENDARA AMAN</p>
+        <p>{t.footer}</p>
         <a
           className="instagram-link"
           href="https://www.instagram.com/cbrsquadindonesia_official?stkn=MWV2OXl0M2Y3ODl0YQ=="
@@ -534,10 +530,9 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         >
           Instagram ↗
         </a>
-        <a href="#home">Kembali ke atas ↑</a>
+        <a href="#home">{t.top}</a>
         <small>© {new Date().getFullYear()} CBR Squad Indonesia</small>
       </footer>
-      {profile && <Modal profile={profile} close={() => setProfile(null)} />}
     </>
   );
 }

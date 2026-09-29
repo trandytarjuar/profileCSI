@@ -58,9 +58,9 @@
 .leader div > span { display: block; color: #c3c3c9; font-size: .65rem; margin-bottom: .35rem; }
 .leader strong { display: block; font-size: .85rem; line-height: 1.5; }
 .panel h4 { font-size: .73rem; margin: 1.2rem 0 .65rem; }
-.preview { display: block; position: relative; }
+.preview { display: block; position: relative; overflow: hidden; background: #090909; }
 .preview img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
-.preview span { display: block; padding: .55rem; background: #090909; font-size: .65rem; }
+.slideStatus { position: absolute; right: .55rem; bottom: .55rem; padding: .35rem .5rem; background: #090909cc; color: #fff; font-size: .62rem; font-weight: 800; }
 .empty { color: #bfc0c7; border: 1px dashed #62646c; padding: .85rem; font-size: .73rem; line-height: 1.6; }
 .contact { display: block; font-size: .78rem; color: #fff; line-height: 1.7; }
 .contact span { display: block; color: #fca5a5; overflow-wrap: anywhere; font-size: .7rem; text-decoration: underline; }

@@ -7,12 +7,14 @@ import type { Chapter, ChapterGroup } from '../data/community';
 import { chapterGroups, mapCallouts, mapFrames, mapPoint, type MapView } from '../data/chapter-map';
 import styles from './ChapterMap.module.css';
 
-export default function ChapterMap({ chapters }: { chapters: Chapter[] }) {
+export default function ChapterMap({ chapters, language = 'id' }: { chapters: Chapter[]; language?: 'id' | 'en' }) {
+  const en = language === 'en';
   const [filter, setFilter] = useState<ChapterGroup | 'all'>('all');
   const [selected, setSelected] = useState<string | null>(null);
   const [view, setView] = useState<MapView>('national');
   const [mapFailed, setMapFailed] = useState(false);
   const [mapLoading, setMapLoading] = useState(true);
+  const [activePhoto, setActivePhoto] = useState(0);
   const mapElement = useRef<HTMLDivElement>(null);
   const focusAfterZoom = useRef(false);
   const shown = chapters.filter(chapter => filter === 'all' || chapter.group === filter);
@@ -20,6 +22,15 @@ export default function ChapterMap({ chapters }: { chapters: Chapter[] }) {
   const western = shown.filter(chapter => chapter.group !== 'CHAPTER MANDIRI');
   const pins = shown.filter(chapter => view === 'west' ? chapter.group !== 'CHAPTER MANDIRI' : chapter.group === 'CHAPTER MANDIRI');
   const frame = mapFrames[view];
+
+  useEffect(() => {
+    setActivePhoto(0);
+    if (!current?.gallery || current.gallery.length < 2) return;
+    const timer = window.setInterval(() => {
+      setActivePhoto(index => (index + 1) % current.gallery!.length);
+    }, 4000);
+    return () => window.clearInterval(timer);
+  }, [current?.slug, current?.gallery]);
 
   useEffect(() => {
     // Check after hydration too: an SVG resource can fail before React attaches handlers.
@@ -50,8 +61,8 @@ export default function ChapterMap({ chapters }: { chapters: Chapter[] }) {
   function reset() { setFilter('all'); setSelected(null); setView('national'); }
 
   return <div className={styles.explorer}>
-    <div className={styles.filters} role="group" aria-label="Filter chapter">
-      <button type="button" aria-pressed={filter === 'all'} onClick={() => changeFilter('all')}>Semua Chapter <span>{chapters.length}</span></button>
+    <div className={styles.filters} role="group" aria-label={en ? 'Chapter filter' : 'Filter chapter'}>
+      <button type="button" aria-pressed={filter === 'all'} onClick={() => changeFilter('all')}>{en ? 'All Chapters' : 'Semua Chapter'} <span>{chapters.length}</span></button>
       {chapterGroups.map(group => <button type="button" key={group.value} aria-pressed={filter === group.value} onClick={() => changeFilter(group.value)}>{group.label} <span>{chapters.filter(chapter => chapter.group === group.value).length}</span></button>)}
     </div>
     <div className={styles.layout}>
@@ -87,11 +98,11 @@ export default function ChapterMap({ chapters }: { chapters: Chapter[] }) {
         </div>
         <ul className={styles.legend} aria-label="Legenda kelompok chapter">{chapterGroups.map(group => <li key={group.value}><span aria-hidden="true">{group.symbol}</span>{group.label}</li>)}</ul>
         <p className={styles.mapNote}>Titik menunjukkan perkiraan wilayah, bukan alamat sekretariat. Peta: <a href="https://www.naturalearthdata.com/about/terms-of-use/" target="_blank" rel="noopener noreferrer">Natural Earth</a>.</p>
-        <div className={styles.listHeader}><h3>Pilih chapter</h3><span>{shown.length} chapter</span></div>
+        <div className={styles.listHeader}><h3>{en ? 'Choose a chapter' : 'Pilih chapter'}</h3><span>{shown.length} {en ? 'chapters' : 'chapter'}</span></div>
         <div className={styles.chapterList} role="group" aria-label="Daftar chapter">
           {shown.map(chapter => <button type="button" key={chapter.slug} aria-pressed={chapter.slug === selected} onClick={() => choose(chapter)}><span>{chapter.code}</span><b>{chapter.name}</b><span aria-hidden="true">↗</span></button>)}
         </div>
-        {shown.length === 0 && <p className={styles.hint}>Belum ada chapter dalam kelompok ini.</p>}
+        {shown.length === 0 && <p className={styles.hint}>{en ? 'There are no chapters in this group yet.' : 'Belum ada chapter dalam kelompok ini.'}</p>}
       </div>
       <aside className={styles.panel} aria-label="Informasi chapter">
         <p className="sr-only" role="status">{current ? `CSI ${current.name} dipilih. ${current.leaderName ? `Ketua Umum: ${current.leaderName}.` : 'Data pengurus belum tersedia.'}` : `Tampilan nasional. ${shown.length} chapter tersedia.`}</p>
@@ -100,10 +111,10 @@ export default function ChapterMap({ chapters }: { chapters: Chapter[] }) {
           <p className={styles.description}>{current.description ?? `Chapter CBR Squad Indonesia di wilayah ${current.name}.`}</p>
           <div className={styles.leader}>{current.leaderPhoto ? <Image src={current.leaderPhoto} alt={`Foto ${current.leaderName ?? 'pengurus chapter'}`} width={56} height={56} /> : <span className={styles.avatar} aria-hidden="true">CSI</span>}<div><span>Ketua Umum Chapter</span><strong>{current.leaderName ?? 'Data pengurus belum tersedia'}</strong></div></div>
           <h4>Dokumentasi kegiatan</h4>
-          {current.gallery?.length ? <Link className={styles.preview} href={`/chapter/${current.slug}#chapter-gallery-title`} aria-label={`Lihat ${current.gallery.length} foto kegiatan CSI ${current.name}`}><Image src={current.gallery[0].src} alt={current.gallery[0].alt} width={current.gallery[0].width} height={current.gallery[0].height} sizes="(max-width: 850px) 88vw, 360px" /><span>{current.gallery.length} foto · Lihat galeri ↗</span></Link> : <p className={styles.empty}>Dokumentasi kegiatan belum tersedia.</p>}
+          {current.gallery?.length ? <div className={styles.preview} aria-label={`Slideshow dokumentasi CSI ${current.name}`}><Image key={current.gallery[activePhoto].src} src={current.gallery[activePhoto].src} alt={current.gallery[activePhoto].alt} width={current.gallery[activePhoto].width} height={current.gallery[activePhoto].height} sizes="(max-width: 850px) 88vw, 360px" />{current.gallery.length > 1 && <span className={styles.slideStatus}>{activePhoto + 1} / {current.gallery.length}</span>}</div> : <p className={styles.empty}>Dokumentasi kegiatan belum tersedia.</p>}
           <h4>Kontak resmi</h4>
           {current.instagram ? <a className={styles.contact} href={current.instagram.url} target="_blank" rel="noopener noreferrer">Instagram ↗<span>{current.instagram.handle}</span></a> : <p className={styles.empty}>Kontak resmi belum tersedia.</p>}
-          <Link className={styles.profileLink} href="/under-construction">Lihat Profil Chapter <span aria-hidden="true">↗</span></Link>
+          <Link className={styles.profileLink} href={`/chapter/${current.slug}`} target="_blank" rel="noopener noreferrer">Lihat Profil Chapter <span aria-hidden="true">↗</span></Link>
         </div> : <div className={styles.welcome}><span className={styles.bigNumber}>{chapters.length.toString().padStart(2, '0')}</span><p className={styles.eyebrow}>CHAPTER / SATU PERSAUDARAAN</p><h3>Temukan<br /><span>chapter-mu.</span></h3><p>Pilih titik di peta atau nama chapter untuk melihat pengurus, dokumentasi, dan kontak yang tersedia.</p><div className={styles.welcomeTip}>Mulai dari wilayah terdekat.<br />Semua chapter bisa dipilih lewat daftar di bawah peta.</div></div>}
       </aside>
     </div>
