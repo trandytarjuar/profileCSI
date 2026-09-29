@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { OrganizationRole, Chapter } from "../data/community";
 import ChapterMap from "./ChapterMap";
 import partnership from "./Partnership.module.css";
@@ -41,66 +41,15 @@ const copy = {
     chapters: "View Chapters ↗", footer: "STAY SOLID, RIDE SAFELY", top: "Back to top ↑", all: "CSI DOCUMENTATION",
   },
 } as const;
-type Profile = { title: string; photo?: string };
-// Temporarily retained for future profile content; modal rendering is disabled below.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function Modal({
-  profile,
-  close,
-}: {
-  profile: string | Profile;
-  close: () => void;
-}) {
-  const { title, photo } =
-    typeof profile === "string" ? { title: profile } : profile;
-  useEffect(() => {
-    const f = (e: KeyboardEvent) => e.key === "Escape" && close();
-    addEventListener("keydown", f);
-    return () => removeEventListener("keydown", f);
-  }, [close]);
-  return (
-    <div className="modal-backdrop" onMouseDown={close}>
-      <section
-        className="profile-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="profile-title"
-        onMouseDown={(e) => e.stopPropagation()}
-      >
-        <button className="close" onClick={close} aria-label="Tutup">
-          ×
-        </button>
-        <p className="kicker">CSI / STRUKTUR ORGANISASI</p>
-        {photo ? (
-          <Image
-            className="profile-photo"
-            src={photo}
-            width={160}
-            height={160}
-            alt={`Foto ${title}`}
-          />
-        ) : (
-          <div className="profile-placeholder">CSI</div>
-        )}
-        <h2 id="profile-title">{title}</h2>
-        <p>
-          Profil pengurus, foto, periode kepengurusan, dan informasi kontak
-          belum dipublikasikan di data resmi proyek ini.
-        </p>
-      </section>
-    </div>
-  );
-}
-type CommunityClientProps = {
+type CommunityClientProps = Readonly<{
   chapters: Chapter[];
   nationalRoles: OrganizationRole[];
   activities: readonly (readonly [string, string])[];
-};
+}>;
 
 export default function CommunityClient({ chapters, nationalRoles, activities }: CommunityClientProps) {
   const [menu, setMenu] = useState(false),
     [org, setOrg] = useState("Nasional"),
-    [, setProfile] = useState<string | Profile | null>(null),
     [gallery, setGallery] = useState(0),
     [language, setLanguage] = useState<Language>("id");
   const t = copy[language];
@@ -353,11 +302,8 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
                 <button
                   className="role-card"
                   key={role.title}
-                  onClick={() =>
-                    setProfile(
-                      role.name ? `${role.name} — ${role.title}` : role.title,
-                    )
-                  }
+                  type="button"
+                  disabled
                 >
                   <span>0{i + 1} / NASIONAL</span>
                   {role.photo ? (
@@ -388,7 +334,8 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
                   <h3>{g}</h3>
                   <button
                     className="leader"
-                    onClick={() => setProfile(`Koordinator Wilayah ${g}`)}
+                    type="button"
+                    disabled
                   >
                     Koordinator wilayah <span>Data pengurus menyusul</span>
                   </button>
@@ -398,16 +345,8 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
                       <button
                         key={r.slug}
                         className="leader"
-                        onClick={() =>
-                          setProfile(
-                            r.leaderName
-                              ? {
-                                  title: `${r.leaderName} — Ketua Umum ${r.name}`,
-                                  photo: r.leaderPhoto,
-                                }
-                              : `Ketua Umum ${r.name}`,
-                          )
-                        }
+                        type="button"
+                        disabled
                       >
                         <b>Ketua Umum {r.name}</b>
                         <span>{r.leaderName ?? "Data pengurus menyusul"}</span>
@@ -427,16 +366,8 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
                     <h3>{r.name}</h3>
                     <button
                       className="leader"
-                      onClick={() =>
-                        setProfile(
-                          r.leaderName
-                            ? {
-                                title: `${r.leaderName} - Ketua Umum ${r.name}`,
-                                photo: r.leaderPhoto,
-                              }
-                            : `Ketua Umum ${r.name}`,
-                        )
-                      }
+                      type="button"
+                      disabled
                     >
                       <b>Ketua Umum {r.name}</b>
                       <span>{r.leaderName ?? "Data pengurus menyusul"}</span>
