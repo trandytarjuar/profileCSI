@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { OrganizationRole, Chapter } from "../data/community";
 import ChapterMap from "./ChapterMap";
+import partnership from "./Partnership.module.css";
 const groups = ["JABODETABEK", "CIKAPUR", "CHAPTER MANDIRI"] as const;
 type Language = "id" | "en";
 
@@ -20,6 +21,7 @@ const copy = {
     filters: ["Semua", "Touring", "Kopdar", "Berkendara Aman", "Kegiatan Sosial", "Persaudaraan"], empty: "Belum ada foto dokumentasi resmi yang tersedia untuk ditampilkan.",
     activitiesKicker: "07 / KEGIATAN KAMI", activitiesTitle: <>DIBUAT UNTUK<br /><span>PERJALANAN.</span></>, contactKicker: "08 / TETAP TERHUBUNG",
     contactTitle: <>SATU HOBI.<br />SATU <span>PERSAUDARAAN.</span></>, contactCopy: "Kontak dan kanal sosial resmi CSI akan ditampilkan setelah data publik diberikan.",
+    partnershipKicker: "02 / KEMITRAAN", partnershipTitle: <>DIDUKUNG<br /><span>BERSAMA.</span></>, partnershipCopy: "Partner yang tumbuh bersama semangat persaudaraan dan budaya berkendara aman CBR Squad Indonesia.",
     chapters: "Lihat Chapter ↗", footer: "TETAP SOLID, BERKENDARA AMAN", top: "Kembali ke atas ↑", all: "DOKUMENTASI CSI",
   },
   en: {
@@ -35,6 +37,7 @@ const copy = {
     filters: ["All", "Touring", "Meetups", "Safe Riding", "Social Activities", "Brotherhood"], empty: "No official photos are available to display yet.",
     activitiesKicker: "07 / OUR ACTIVITIES", activitiesTitle: <>MADE FOR<br /><span>THE JOURNEY.</span></>, contactKicker: "08 / STAY CONNECTED",
     contactTitle: <>ONE PASSION.<br />ONE <span>BROTHERHOOD.</span></>, contactCopy: "Official CSI contact details and social channels will appear once public information is provided.",
+    partnershipKicker: "02 / PARTNERSHIP", partnershipTitle: <>SUPPORTED<br /><span>TOGETHER.</span></>, partnershipCopy: "Partners who share CBR Squad Indonesia's spirit of brotherhood and culture of safe riding.",
     chapters: "View Chapters ↗", footer: "STAY SOLID, RIDE SAFELY", top: "Back to top ↑", all: "CSI DOCUMENTATION",
   },
 } as const;
@@ -191,6 +194,24 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
             </div>
           </div>
         </section>
+        <section className={partnership.section} aria-labelledby="partnership-title">
+          <div className={partnership.copy}>
+            <p className="kicker">{t.partnershipKicker}</p>
+            <h2 id="partnership-title">{t.partnershipTitle}</h2>
+            <p>{t.partnershipCopy}</p>
+          </div>
+          <div className={partnership.logos} aria-label="Partner resmi CSI">
+            {[
+              { name: "Repsol Lubricants", src: "/partnership/repsol.png" },
+              { name: "RCB", src: "/partnership/rcb.png" },
+            ].map((partner) => (
+              <div className={partnership.slot} key={partner.name}>
+                <Image src={partner.src} width={600} height={220} alt={`Logo ${partner.name}`} />
+                <b>{partner.name}</b>
+              </div>
+            ))}
+          </div>
+        </section>
         <section id="logo-history" className="section logo-history">
           <div className="logo-history-mark">
             <Image
@@ -201,7 +222,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
             />
           </div>
           <div>
-            <p className="kicker">02 / IDENTITAS CSI</p>
+            <p className="kicker">03 / IDENTITAS CSI</p>
             <h2>
               SEJARAH
               <br />
@@ -264,7 +285,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         <section id="member-rules" className="section member-rules">
           <div className="section-head">
             <div>
-              <p className="kicker">{language === "en" ? "03 / MEMBER GUIDE" : "03 / PEDOMAN ANGGOTA"}</p>
+              <p className="kicker">{language === "en" ? "04 / MEMBER GUIDE" : "04 / PEDOMAN ANGGOTA"}</p>
               <h2>
                 {language === "en" ? "SOLID ON THE ROAD." : "SOLID DI JALAN."}
                 <br />
@@ -299,7 +320,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         <section id="organization" className="section organization">
           <div className="section-head">
             <div>
-              <p className="kicker">04 / STRUKTUR ORGANISASI</p>
+              <p className="kicker">05 / STRUKTUR ORGANISASI</p>
               <h2>
                 SATU TIM.
                 <br />
@@ -428,7 +449,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         <section id="territory" className="section territory">
           <div className="section-head">
             <div>
-              <p className="kicker">{t.territoryKicker}</p>
+              <p className="kicker">{t.territoryKicker.replace("05", "06")}</p>
               <h2>{t.territoryTitle}</h2>
             </div>
             <p>
@@ -440,7 +461,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
         <section id="gallery" className="section gallery">
           <div className="section-head">
             <div>
-              <p className="kicker">{t.galleryKicker}</p>
+              <p className="kicker">{t.galleryKicker.replace("06", "07")}</p>
               <h2>{t.galleryTitle}</h2>
             </div>
             <p>
@@ -469,7 +490,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
           </div>
         </section>
         <section id="activities" className="section activities">
-          <p className="kicker">{t.activitiesKicker}</p>
+          <p className="kicker">{t.activitiesKicker.replace("07", "08")}</p>
           <h2>{t.activitiesTitle}</h2>
           <div className="activity-list">
             {activities.map(([name, copy], i) => (
@@ -483,7 +504,7 @@ export default function CommunityClient({ chapters, nationalRoles, activities }:
           </div>
         </section>
         <section id="contact" className="contact">
-          <p className="kicker light">{t.contactKicker}</p>
+          <p className="kicker light">09 / {language === "en" ? "STAY CONNECTED" : "TETAP TERHUBUNG"}</p>
           <h2>{t.contactTitle}</h2>
           <p>
             {t.contactCopy}
