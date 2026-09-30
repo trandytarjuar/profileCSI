@@ -1,6 +1,32 @@
 import type { Metadata } from 'next';
 import './globals.css';
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://cbrsquadindonesia.vercel.app/#organization',
+      name: 'CBR Squad Indonesia',
+      alternateName: 'CSI',
+      url: 'https://cbrsquadindonesia.vercel.app/',
+      logo: 'https://cbrsquadindonesia.vercel.app/csi-favicon.png',
+      description:
+        'CBR Squad Indonesia adalah komunitas pecinta Honda CBR di Indonesia yang menjunjung tinggi solidaritas, safety riding, dan kebersamaan antar wilayah.',
+      sameAs: ['https://www.instagram.com/cbrsquadindonesia_official?stkn=MWV2OXl0M2Y3ODl0YQ==']
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://cbrsquadindonesia.vercel.app/#website',
+      name: 'CBR Squad Indonesia',
+      alternateName: 'CSI',
+      url: 'https://cbrsquadindonesia.vercel.app/',
+      inLanguage: 'id-ID',
+      publisher: { '@id': 'https://cbrsquadindonesia.vercel.app/#organization' }
+    }
+  ]
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://cbrsquadindonesia.vercel.app'),
   title: {
@@ -61,6 +87,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="id">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -10,10 +10,31 @@ export function generateStaticParams() { return chapters.map(({ slug }) => ({ sl
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const chapter = chapters.find((item) => item.slug === slug);
-  return { title: chapter ? `CSI ${chapter.name} | CBR Squad Indonesia` : "Chapter | CBR Squad Indonesia" };
+  if (!chapter) return { title: 'Chapter' };
+
+  const title = `CSI ${chapter.name}`;
+  const description = `Profil CBR Squad Indonesia Chapter ${chapter.name}. Temukan informasi chapter dan kegiatan yang tersedia.`;
+  const url = `/chapter/${chapter.slug}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `CBR Squad Indonesia ${chapter.name}`,
+      description,
+      url,
+      type: 'website'
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `CBR Squad Indonesia ${chapter.name}`,
+      description
+    }
+  };
 }
 
-export default async function ChapterPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function ChapterPage({ params }: Readonly<{ params: Promise<{ slug: string }> }>) {
   const { slug } = await params;
   const chapter = chapters.find((item) => item.slug === slug);
   if (!chapter) notFound();
