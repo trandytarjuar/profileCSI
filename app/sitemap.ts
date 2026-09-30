@@ -12,12 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly',
       priority: 1,
     },
-    {
-      url: `${base}/under-construction`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
     ...chapters.map((chapter) => ({ url: `${base}/chapter/${chapter.slug}`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 }))
   ];
 }
