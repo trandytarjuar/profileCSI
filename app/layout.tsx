@@ -40,6 +40,9 @@ export const metadata: Metadata = {
       'max-snippet': -1
     }
   },
+  verification: {
+    google: 'Gss8F_eVL13tn_L0ooIxnmrHVO2IVtRjEDbBcyueyY4'
+  },
   openGraph: {
     title: 'CBR Squad Indonesia',
     description: 'Satu hobi, satu persaudaraan. Komunitas pecinta Honda CBR di Indonesia.',
