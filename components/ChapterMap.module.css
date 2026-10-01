@@ -62,6 +62,7 @@
 .preview img { display: block; width: 100%; height: auto; aspect-ratio: 4/3; object-fit: cover; }
 .slideStatus { position: absolute; right: .55rem; bottom: .55rem; padding: .35rem .5rem; background: #090909cc; color: #fff; font-size: .62rem; font-weight: 800; }
 .empty { color: #bfc0c7; border: 1px dashed #62646c; padding: .85rem; font-size: .73rem; line-height: 1.6; }
+.contacts { display: grid; gap: 1rem; }
 .contact { display: block; font-size: .78rem; color: #fff; line-height: 1.7; }
 .contact span { display: block; color: #fca5a5; overflow-wrap: anywhere; font-size: .7rem; text-decoration: underline; }
 .profileLink { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1rem; margin-top: 1.5rem; min-height: 48px; background: #b91c1c; font-size: .75rem; font-weight: 800; }
